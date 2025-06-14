@@ -1,0 +1,11 @@
+name: Example - Python Project using Golden Template
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  ci:
+    uses: techdeavour/golden-templates/.github/workflows/python/ci.yml@main
+    with:
+      python-version: "3.11"

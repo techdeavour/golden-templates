@@ -1,0 +1,34 @@
+name: Python CI
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: ./actions/setup-python
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pip-audit black flake8 pytest
+
+      - name: Lint
+        run: black . --check && flake8 .
+
+      - name: Test
+        run: pytest
+
+      - name: Audit for Vulnerabilities
+        run: pip-audit
